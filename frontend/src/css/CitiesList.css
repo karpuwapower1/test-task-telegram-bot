@@ -1,0 +1,9 @@
+body{
+    margin: 20px;
+}
+
+td, th {
+    text-align: center;
+    vertical-align: center;
+    white-space: nowrap;
+}

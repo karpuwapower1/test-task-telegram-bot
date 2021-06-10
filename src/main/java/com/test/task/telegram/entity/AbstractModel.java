@@ -19,7 +19,4 @@ public class AbstractModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, updatable = false, insertable = false, nullable = false)
     private long id;
-
-    @Column(unique = true, updatable = false, nullable = false)
-    private String uuid;
 }

@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
-import { Button, ButtonGroup, Container, Table } from 'reactstrap';
-import { NavLink, Link  } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Button, Container, Table} from 'reactstrap';
+import {Link} from 'react-router-dom';
+import '../css/CitiesList.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class CitiesList extends Component {
 
@@ -20,35 +22,36 @@ class CitiesList extends Component {
 
         const citiesList = cities.map(city => {
             return <tr key={city.uuid}>
-                <td style={{whiteSpace: 'nowrap'}}>{city.name}</td>
+                <td>{city.name}</td>
+                <td>{city.info}</td>
                 <td>
-                    <Link to={'/cities/' + city.uuid}>
-                        <Button>
-                            Edit
-                        </Button>
-                    </Link>
+                    <Button color='outline-primary' tag={Link} to={'/cities/' + city.id}>
+                        Edit
+                    </Button>
                 </td>
             </tr>
         });
 
         return (
             <Container>
-            <div className="cities-table">
-                <h3 align={"center"}>Cities</h3>
-                <Table className="mt-4" bordered>
-                    <thead>
-                    <tr>
-                        <th width="33%">Name</th>
-                        <th width="33%">Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {citiesList}
-                    </tbody>
-                </Table>
-            </div>
+                <div className="cities-table">
+                    <h3 align={"center"}>Cities</h3>
+                    <Table className="mt-4" bordered>
+                        <thead>
+                        <tr key={"header"}>
+                            <th width="33%">Name</th>
+                            <th width="33%">Info</th>
+                            <th width="33%">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {citiesList}
+                        </tbody>
+                    </Table>
+                </div>
             </Container>
         );
     }
 }
+
 export default CitiesList;

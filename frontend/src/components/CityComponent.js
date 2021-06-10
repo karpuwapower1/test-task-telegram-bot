@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import { Button, ButtonGroup, Container, Table } from 'reactstrap';
-import { Link } from 'react-router-dom';
-import { withRouter } from 'react-router';
+import React, {Component} from 'react';
+import {Button, Container, Form, FormGroup, Input, Label} from 'reactstrap';
+import {Link} from "react-router-dom";
+import {withRouter} from 'react-router';
 
 class CityComponent extends Component {
 
     emptyItem = {
         name: '',
-        description: ''
+        info: ''
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            item: this.emptyItem
+            city: this.emptyItem
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,8 +21,8 @@ class CityComponent extends Component {
 
     async componentDidMount() {
         if (this.props.match.params.id !== 'new') {
-            const client = await (await fetch(`/cities/${this.props.match.params.id}`)).json();
-            this.setState({item: client});
+            const city = await (await fetch(`/cities/${this.props.match.params.id}`)).json();
+            this.setState({city: city});
         }
     }
 
@@ -30,38 +30,53 @@ class CityComponent extends Component {
         const target = event.target;
         const value = target.value;
         const name = target.name;
-        let item = {...this.state.item};
-        item[name] = value;
-        this.setState({item});
+        let city = {...this.state.city};
+        city[name] = value;
+        this.setState({city});
     }
 
     async handleSubmit(event) {
         event.preventDefault();
-        const {item} = this.state;
+        const {city} = this.state;
 
-        await fetch('/cities' + (item.id ? '/' + item.id : ''), {
-            method: (item.id) ? 'PUT' : 'POST',
+        await fetch('/cities' + (city.id ? '/' + city.id : ''), {
+            method: (city.id) ? 'PUT' : 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(item),
+            body: JSON.stringify(city),
         });
-        this.props.history.push('/clients');
+        this.props.history.push('/cities');
     }
 
     render() {
-        const {item} = this.state;
-        const title = <h2>{item.id ? 'Edit City' : 'Add City'}</h2>;
+        const {city} = this.state;
+        const title = <h2>{city.id ? 'Edit City' : 'Add City'}</h2>;
 
-        return <div>
-            <Container>
-                {title}
-                <div>
-                    {item.name}
-                </div>
-            </Container>
-        </div>
+        return (
+            <div>
+                <Container>
+                    {title}
+                    <Form onSubmit={this.handleSubmit}>
+                        <FormGroup>
+                            <Label for="name">Name</Label>
+                            <Input type="text" name="name" id="name" value={city.name || ''}
+                                   onChange={this.handleChange} autoComplete="name"/>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="info">Info</Label>
+                            <Input type="text" name="info" id="info" value={city.info || ''}
+                                   onChange={this.handleChange} autoComplete="info"/>
+                        </FormGroup>
+                        <FormGroup>
+                            <Button color="primary" type="submit">Save</Button>{' '}
+                            <Button color="secondary" tag={Link} to="/clients">Cancel</Button>
+                        </FormGroup>
+                    </Form>
+                </Container>
+            </div>
+        )
     }
 }
 
