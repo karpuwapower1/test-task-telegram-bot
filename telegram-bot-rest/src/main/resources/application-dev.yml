@@ -1,0 +1,5 @@
+spring:
+  application.name: travel_helper_test_task
+
+  datasource:
+    url: jdbc:postgresql://localhost:54321/tourist_advice_db?useSSL=false

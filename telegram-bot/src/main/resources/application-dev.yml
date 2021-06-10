@@ -1,0 +1,8 @@
+spring:
+  application.name: travel_helper_test_task_telegram_bot
+
+  datasource:
+    url: jdbc:postgresql://localhost:54321/tourist_advice_db?useSSL=false
+
+ngrok:
+  url: http://localhost:4040/api/tunnels/command_line
