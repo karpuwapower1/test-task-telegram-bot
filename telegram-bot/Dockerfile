@@ -1,24 +1,13 @@
-FROM openjdk:8-jdk-alpine as build
+FROM maven:3-jdk-8 as builder
 
 WORKDIR /app
-
-COPY mvnw .
-COPY .mvn .mvn
 COPY pom.xml .
+COPY src ./src
 
-RUN ./mvnw dependency:go-offline -B
-
-COPY src src
-
-RUN ./mvnw package -DskipTests
-RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
+RUN mvn package -DskipTests
 
 FROM openjdk:8-jre-alpine
 
-ARG DEPENDENCY=/app/target/dependency
+COPY --from=builder /app/target/telegram-bot*.jar /telegram-bot.jar
 
-COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
-COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
-
-ENTRYPOINT ["java", "-cp","app:app/lib/*", "com.test.task.telegram.TelegramApplication"]
+CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/telegram-bot.jar"]

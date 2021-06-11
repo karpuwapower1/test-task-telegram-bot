@@ -1,9 +1,22 @@
-body{
+#root {
     margin: 20px;
 }
 
-td, th {
-    text-align: center;
-    vertical-align: center;
+#cities_list {
+    margin: auto;
+}
+
+.cities_table {
+   margin: auto;
+}
+
+td, th
+{
+    text-align: center !important;
+    vertical-align: center !important;
     white-space: nowrap;
+}
+
+.add-city {
+    float: right;
 }

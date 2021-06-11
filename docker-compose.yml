@@ -9,22 +9,8 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=tourist_advice_db
     restart: always
-#    networks:
-#      - postgres
-#    volumes:
-#      - ./db-data:/var/lib/postgresql/data
-#
-#  ngrok:
-#    image: wernight/ngrok
-#    container_name: ngrok
-#    ports:
-#      - "4045:4040"
-#    environment:
-#      - NGROK_PROTOCOL=http
-#      - NGROK_PORT="host.docker.internal:8083"
-#    networks:
-#      - ngrok
-
+    volumes:
+      - db_volume:/var/lib/postgresql/data
 
   ngrok:
     image: shkoliar/ngrok:latest
@@ -36,36 +22,19 @@ services:
       - DOMAIN=telegram-bot
       - PORT=8081
 
-  #    environment:
-#      NGROK_PORT: http://localhost:8083
-#    ports:
-#      - "4040:4040"
-
   telegram-bot:
     build: ./telegram-bot
     container_name: telegram-bot
-#    ports:
-#      - 8083:8080
     restart: always
     depends_on:
       - db
-#      - ngrok
-#    networks:
-#      - ngrok
-#      - postgres
 
   telegram-bot-rest:
     build: ./telegram-bot-rest
     container_name: telegram-bot-rest
-    #    ports:
-    #      - 8083:8080
     restart: always
     depends_on:
       - db
-  #      - ngrok
-  #    networks:
-  #      - ngrok
-  #      - postgres
 
   frontend:
     build:
@@ -80,6 +49,5 @@ services:
     depends_on:
       - telegram-bot-rest
 
-#networks:
-#  ngrok:
-#  postgres:
+volumes:
+  db_volume:

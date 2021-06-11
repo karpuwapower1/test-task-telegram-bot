@@ -17,6 +17,6 @@ public class AbstractModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, updatable = false, insertable = false, nullable = false)
+//    @Column(unique = true, updatable = false, insertable = false, nullable = false)
     private long id;
 }

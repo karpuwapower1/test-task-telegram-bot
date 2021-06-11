@@ -1,0 +1,13 @@
+spring:
+  application.name: travel_helper_test_task
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username:
+    password:
+
+  jpa:
+    properties.hibernate:
+      ddl-auto: none
+      dialect: org.hibernate.dialect.H2Dialect

@@ -9,6 +9,7 @@ class CitiesList extends Component {
     constructor(props) {
         super(props);
         this.state = {cities: []};
+        this.deleteCity = this.deleteCity.bind(this);
     }
 
     componentDidMount() {
@@ -17,23 +18,40 @@ class CitiesList extends Component {
             .then(data => this.setState({cities: data}));
     }
 
+    async deleteCity(id) {
+        await fetch('/cities/' + id, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        }).then(() => {
+                let cities = [...this.state.cities].filter(city => city.id !== id);
+                this.setState({cities: cities});
+            })
+        this.props.history.push('/cities');
+    }
+
     render() {
         const {cities} = this.state;
 
         const citiesList = cities.map(city => {
-            return <tr key={city.uuid}>
+            return <tr key={city.id}>
                 <td>{city.name}</td>
                 <td>{city.info}</td>
                 <td>
                     <Button color='outline-primary' tag={Link} to={'/cities/' + city.id}>
                         Edit
                     </Button>
+                    <Button color='outline-danger' type='submit' onClick={() => this.deleteCity(city.id)}>
+                        Delete
+                    </Button>
                 </td>
             </tr>
         });
 
         return (
-            <Container>
+            <Container id="cities_list">
                 <div className="cities-table">
                     <h3 align={"center"}>Cities</h3>
                     <Table className="mt-4" bordered>
@@ -48,6 +66,11 @@ class CitiesList extends Component {
                         {citiesList}
                         </tbody>
                     </Table>
+                    <div class="add-city">
+                    <Button color='outline-primary' tag={Link} to={'/cities/-1'}>
+                        Add
+                    </Button>
+                    </div>
                 </div>
             </Container>
         );

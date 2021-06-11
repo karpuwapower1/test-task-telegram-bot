@@ -1,7 +1,7 @@
 package com.test.task.telegram.service.impl;
 
-import com.test.task.telegram.exception.NoSuchCityException;
 import com.test.task.telegram.dto.CityDto;
+import com.test.task.telegram.exception.NoSuchCityException;
 import com.test.task.telegram.mapper.CityMapper;
 import com.test.task.telegram.repository.CityRepository;
 import com.test.task.telegram.service.CityService;
@@ -23,7 +23,7 @@ public class CityServiceImpl implements CityService {
     public CityDto getCityById(long id) {
         return cityRepository.findById(id)
             .map(cityMapper::toCityDto)
-            .orElseThrow(IllegalArgumentException::new);
+            .orElseThrow(NoSuchCityException::new);
     }
 
     @Override
@@ -32,13 +32,6 @@ public class CityServiceImpl implements CityService {
             .stream()
             .map(cityMapper::toCityDto)
             .collect(Collectors.toList());
-    }
-
-    @Override
-    public CityDto getCityByName(String name) {
-        return cityRepository.findByNameIgnoreCase(name)
-            .map(cityMapper::toCityDto)
-            .orElseThrow(NoSuchCityException::new);
     }
 
     @Override
@@ -51,7 +44,12 @@ public class CityServiceImpl implements CityService {
     public CityDto updateCity(long id, CityDto cityDto) {
         val updated = cityRepository.findById(id)
             .map(city -> cityMapper.updateCity(cityDto, city))
-            .orElseThrow(IllegalArgumentException::new);
+            .orElseThrow(NoSuchCityException::new);
         return cityMapper.toCityDto(cityRepository.save(updated));
+    }
+
+    @Override
+    public void deleteCity(long id) {
+        cityRepository.deleteById(id);
     }
 }

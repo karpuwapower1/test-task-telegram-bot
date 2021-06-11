@@ -2,12 +2,15 @@ package com.test.task.telegram;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-class TelegramApplicationTests {
+@ActiveProfiles("test")
+class TelegramApplicationTest {
 
     @Test
-    void contextLoads() {
+    public void appTest() {
+
     }
 
 }

@@ -10,9 +10,9 @@ public interface CityService {
 
     List<CityDto> getAll();
 
-    CityDto getCityByName(String name);
-
     CityDto saveCity(CityDto cityDto);
 
     CityDto updateCity(long id, CityDto cityDto);
+
+    void deleteCity(long id);
 }
