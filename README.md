@@ -1,5 +1,5 @@
 #Start application
-### run `docker-compose up -d` and then go to `localhost://3000`
+### run `docker-compose up -d` and then go to `http://localhost:3000`
 
 ##Telegram bot link `t.me/travel_helper_test_task_bot`
 
